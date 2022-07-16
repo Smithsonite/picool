@@ -1,34 +1,35 @@
 # **PICOOL**
 
 - [**PICOOL**](#picool)
-- [About](#about)
-- [Resources/Parts/References](#resourcespartsreferences)
-  - [Code](#code)
-  - [Hardware](#hardware)
-- [Diagram](#diagram)
-  - [Breadboard](#breadboard)
-  - [Schematics](#schematics)
-- [Finished components](#finished-components)
-    - [The final product](#the-final-product)
-    - [The Squid](#the-squid)
-    - [The Switch](#the-switch)
-    - [Partial Hookup](#partial-hookup)
-    - [Final connection](#final-connection)
-- [Control Script](#control-script)
-# About
+- [**About**](#about)
+- [**Resources/Parts/References**](#resourcespartsreferences)
+  - [**Code**](#code)
+  - [**Hardware**](#hardware)
+- [**Diagram**](#diagram)
+  - [**Breadboard**](#breadboard)
+  - [**Schematics**](#schematics)
+- [**Components**](#components)
+    - [**The final product**](#the-final-product)
+    - [**The Squid**](#the-squid)
+      - [**Building the Squid**](#building-the-squid)
+    - [**The Switch**](#the-switch)
+    - [**Partial Hookup**](#partial-hookup)
+    - [**Final connection**](#final-connection)
+- [**Control Script**](#control-script)
+# **About**
 This repository is primarily visuals and references around my modifications to the Raspberry pi 4b official plastic case in combination with the work done at [Howchoo](https://howchoo.com/g/ote2mjkzzta/control-raspberry-pi-fan-temperature-python). I decided to do this because im building home labs and appliances that will require RPI4's and the fan running constantly will drive me 100% insane.
 
 This project differs from the original HowChoo by making the circuit modular, and by adding an override switch.
 
 This will likely be rendered moot after the availability of the [Turing pi 2](https://turingpi.com/) becomes a thing. A proper ITX case + 120 or 200MM fan will keep a pi cluster nice and cool!
 
-# Resources/Parts/References
+# **Resources/Parts/References**
 
-## Code
+## **Code**
 
 * [Reference repository](https://github.com/Howchoo/pi-fan-controller)
 
-## Hardware
+## **Hardware**
 Below are examples of what I used/ordered to complete this, depending on your case, you may wish to order different sized equipment. You may also be able to get smaller qty of the very specific parts we are going to use. These covered my needs.
 * [QuadHands](https://www.amazon.com/gp/product/B00GIKVP5K/ref=ppx_yo_dt_b_asin_title_o00_s01?ie=UTF8&psc=1) - This makes soldering insanely easy.
 * Soldering iron - Pick your preference out there. I did this with a $5, 22 year old soldering iron issued from DeVry.
@@ -41,51 +42,87 @@ Below are examples of what I used/ordered to complete this, depending on your ca
 * A Dremel or any other tool used to create a slot for the slide switch
 * A drill for the switch mounting holes 
 
-# Diagram
+# **Diagram**
 These diagrams were created using [Fritzing](https://fritzing.org/) and i highly recommend it for any hobbyists who want a nice looking diagram that will produce Breadboard, Schematic and BCP diagrams simultaneously! Its a steel at $10.
 
-## Breadboard
+## **Breadboard**
 ![Screenshot](Documentation/Images/PiCooler_bb.png)
 
-## Schematics
+## **Schematics**
 ![Screenshot](Documentation/Images/PiCooler_schem.png)
 
-# Finished components
-### The final product
+# **Components**
+### **The final product**
 
 All buttoned up. This is what you will hopefully have at the end of this project! Keep this in your head as you work towards the finish line!
 
 ![Screenshot](Documentation/Images/FinishedProduct.png)
 
-### The Squid
+### **The Squid**
 
 The final, heat-shrinked modular circuit. 
 
 ![screenshot](Documentation/Images/Squid.png)
 
+#### **Building the Squid**
 
-### The Switch
+Step by step images of the squid being built
+
+We start with the transistor
+![Screenshot](Documentation/Images/2N222Pinout.png)
+
+* The emitter connects to Ground and bypass
+* The Base has a resistor attached to it 
+* The collector connects to the fan and bypass
+
+We start with the Base, connecting first the 680 Ohm resistor and heat shrinking it
+
+![Screenshot](Documentation/Images/Squid1.png)
+
+![Screenshot](Documentation/Images/Squid2.png)
+
+Next we add a female jumper to allow plugging it into the GPIO.
+
+![Screenshot](Documentation/Images/Squid3.png)
+
+This screenshot shows the Collector complete and heat-shrinked on the right, and the Emitter about to be soldered on the left
+
+![Screenshot](Documentation/Images/Squid4.png)
+
+Pre and post Shirnk-wrap for the transistor
+
+![Screenshot](Documentation/Images/Squid5.png)
+![Screenshot](Documentation/Images/Squid6.png)
+
+
+
+
+### **The Switch**
+The switch needs a notch carved out of  the case, and mounting holes drilled
+
+![Screenshot](Documentation/Images/Switch%20Hole.png)
+![Screenshot](Documentation/Images/SwitchMount.png)
 
 Mounted, front and rear, with female jumpers to accept the squid connection.
 
 ![Screenshot](Documentation/Images/FrontSwitch.png)
-
 ![Screenshot](Documentation/Images/RearSwitch.png)
 
-### Partial Hookup
+
+### **Partial Hookup**
 
 Here you can see the circuit attached to the switch leads and the fan connected to the squid
 
 ![screenshot](Documentation/Images/PartialHookup.png)
 
-### Final connection
+### **Final connection**
 
 Lastly we have our circuit completely attached.The Base to the GPIO, the collector from the can, and the emitter attached to ground to complete the circuit.
 
 ![Screenshot](Documentation/Images/boardhookup.png)
 
 
-# Control Script
+# **Control Script**
 For this you can either follow the instructions from the [original project](https://github.com/Howchoo/pi-fan-controller), or read my instructions below.
 
 This software leverages a combination of a python script, which polls the temperature and toggles output to the GPIO output to trigger the base depending on the temperature. It has a requirement for some pip modules. Pip modules are usually installed on a per-user basis, but since this needs to be globally accessible, you need to install them via sudo. You can find the requirements file in the root of this repository, then copy the fancontrol.py and fancontrol.sh files to their appropriate directory's (seen below)
@@ -111,7 +148,7 @@ sudo update-rc.d fancontrol.sh defaults
 sudo reboot
 ```
 
-The configuration block for when the monitor willkick your fan on can be fond in the fancontrol.py file
+The configuration block for when the monitor will kick your fan on can be found in the fancontrol.py file
 
 ```
 #!/usr/bin/env python3
